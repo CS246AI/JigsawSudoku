@@ -90,3 +90,4 @@ modules.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+iml
 /out/
+/.idea/vcs.xml
