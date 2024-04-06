@@ -26,7 +26,7 @@ public class BoardGenerator {
     private static ArrayList<Integer> generateArrayList(int n) {
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            list.add(i);
+            list.add(i + 1);
         }
         return list;
     }
