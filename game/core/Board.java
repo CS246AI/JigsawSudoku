@@ -5,14 +5,18 @@ import game.generator.BoardGenerator;
 import java.util.ArrayList;
 
 public class Board {
-    private final ArrayList<ArrayList<Integer>> board;
-    private final BoardSize boardSize;
+    private ArrayList<ArrayList<Integer>> board;
+    private BoardSize boardSize;
 
     public Board() {
         this(BoardSize.SMALL);
     }
 
     public Board(BoardSize size) {
+        resize(size);
+    }
+
+    public void resize(BoardSize size) {
         boardSize = size;
         board = BoardGenerator.generateBoard(size);
     }
@@ -24,5 +28,13 @@ public class Board {
             }
             System.out.println();
         }
+    }
+
+    public BoardSize getBoardSize() {
+        return boardSize;
+    }
+
+    public int getNumber(int row, int col) {
+        return board.get(row).get(col);
     }
 }
