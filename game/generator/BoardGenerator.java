@@ -2,39 +2,62 @@ package game.generator;
 
 import game.core.BoardSize;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Random;
 
 public class BoardGenerator {
 
-    public static ArrayList<ArrayList<Integer>> generateBoard(BoardSize size) {
-        ArrayList<ArrayList<Integer>> board = new ArrayList<>();
-        board.add(generateRow(size));
+    public static int[][] generateBoard(BoardSize size) {
+        int[][] board = new int[size.value][size.value];
+        board[0] = generateRow(size);
         for (int i = 1; i < size.value; i++) {
-            board.add(shift((ArrayList<Integer>) board.get(i - 1).clone()));
+            board[i] = shift(board[i - 1]);
         }
-        Collections.shuffle(board);
+        shuffleBoard(board);
         return board;
     }
 
-    private static ArrayList<Integer> generateRow(BoardSize size) {
-        ArrayList<Integer> row = generateArrayList(size.value);
-        Collections.shuffle(row);
+    private static int[] generateRow(BoardSize size) {
+        int[] row = generateArray(size.value);
+        shuffleArray(row);
         return row;
     }
 
-    private static ArrayList<Integer> generateArrayList(int n) {
-        ArrayList<Integer> list = new ArrayList<>();
+    private static int[] generateArray(int n) {
+        int[] array = new int[n];
         for (int i = 0; i < n; i++) {
-            list.add(i + 1);
+            array[i] = i + 1;
         }
-        return list;
+        return array;
     }
 
-    private static ArrayList<Integer> shift(ArrayList<Integer> previous) {
-        ArrayList<Integer> row = new ArrayList<>();
-        row.add(previous.removeLast());
-        row.addAll(previous);
+    private static void shuffleArray(int[] array) {
+        int index, temp;
+        Random random = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            index = random.nextInt(i + 1);
+            temp = array[index];
+            array[index] = array[i];
+            array[i] = temp;
+        }
+    }
+
+    public static void shuffleBoard(int[][] array) {
+        Random random = new Random();
+        for (int i = 0; i < array.length; i++) {
+            int randomIndex = random.nextInt(array.length);
+            if (i != randomIndex) {
+                // Swap outer array elements
+                int[] temp = array[i];
+                array[i] = array[randomIndex];
+                array[randomIndex] = temp;
+            }
+        }
+    }
+
+    private static int[] shift(int[] previous) {
+        int[] row = new int[previous.length];
+        row[0] = previous[previous.length - 1];
+        System.arraycopy(previous, 0, row, 1, previous.length - 1);
         return row;
     }
 }

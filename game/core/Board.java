@@ -2,10 +2,8 @@ package game.core;
 
 import game.generator.BoardGenerator;
 
-import java.util.ArrayList;
-
 public class Board {
-    private ArrayList<ArrayList<Integer>> board;
+    private int[][] board;
     private BoardSize boardSize;
 
     public Board() {
@@ -24,7 +22,7 @@ public class Board {
     public void printBoard() {
         for (int i = 0; i < boardSize.value; i++) {
             for (int j = 0; j < boardSize.value; j++) {
-                System.out.print(board.get(i).get(j) + " ");
+                System.out.print(board[i][j] + " ");
             }
             System.out.println();
         }
@@ -35,6 +33,6 @@ public class Board {
     }
 
     public int getNumber(int row, int col) {
-        return board.get(row).get(col);
+        return board[row][col];
     }
 }
