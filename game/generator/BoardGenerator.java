@@ -1,37 +1,44 @@
 package game.generator;
 
 import game.core.BoardSize;
+import game.core.Cell;
 
 import java.util.Random;
 
 public class BoardGenerator {
 
-    public static int[][] generateBoard(BoardSize size) {
-        int[][] board = new int[size.value][size.value];
+    public static Cell[][] generateBoard(BoardSize size) {
+        Cell[][] board = new Cell[size.value][size.value];
         board[0] = generateRow(size);
         for (int i = 1; i < size.value; i++) {
             board[i] = shift(board[i - 1]);
         }
         shuffleBoard(board);
+        for (int row = 0; row < size.value; row++) {
+            for (int col = 0; col < size.value; col++) {
+                board[row][col].setRowCol(row, col);
+            }
+        }
         return board;
     }
 
-    private static int[] generateRow(BoardSize size) {
-        int[] row = generateArray(size.value);
+    private static Cell[] generateRow(BoardSize size) {
+        Cell[] row = generateArray(size.value);
         shuffleArray(row);
         return row;
     }
 
-    private static int[] generateArray(int n) {
-        int[] array = new int[n];
+    private static Cell[] generateArray(int n) {
+        Cell[] array = new Cell[n];
         for (int i = 0; i < n; i++) {
-            array[i] = i + 1;
+            array[i] = new Cell(i + 1);
         }
         return array;
     }
 
-    private static void shuffleArray(int[] array) {
-        int index, temp;
+    private static void shuffleArray(Cell[] array) {
+        int index;
+        Cell temp;
         Random random = new Random();
         for (int i = array.length - 1; i > 0; i--) {
             index = random.nextInt(i + 1);
@@ -41,23 +48,25 @@ public class BoardGenerator {
         }
     }
 
-    public static void shuffleBoard(int[][] array) {
+    public static void shuffleBoard(Cell[][] array) {
         Random random = new Random();
         for (int i = 0; i < array.length; i++) {
             int randomIndex = random.nextInt(array.length);
             if (i != randomIndex) {
                 // Swap outer array elements
-                int[] temp = array[i];
+                Cell[] temp = array[i];
                 array[i] = array[randomIndex];
                 array[randomIndex] = temp;
             }
         }
     }
 
-    private static int[] shift(int[] previous) {
-        int[] row = new int[previous.length];
-        row[0] = previous[previous.length - 1];
-        System.arraycopy(previous, 0, row, 1, previous.length - 1);
+    private static Cell[] shift(Cell[] previous) {
+        Cell[] row = new Cell[previous.length];
+        row[0] = new Cell(previous[previous.length - 1].getValue());
+        for (int i = 1; i < previous.length; i++) {
+            row[i] = new Cell(previous[i - 1].getValue());
+        }
         return row;
     }
 }
