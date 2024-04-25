@@ -1,6 +1,7 @@
 package game.core;
 
 import game.generator.BoardGenerator;
+import game.generator.ProblemGenerator;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -8,26 +9,44 @@ import java.util.Random;
 public class Board {
     private Cell[][] board;
     private BoardSize boardSize;
+    private GameDifficulty gameDifficulty;
     private BoardHelper helper;
     private boolean[][] occupied;
     private ArrayList<ArrayList<Cell>> allShapes;
 
     public Board() {
-        this(BoardSize.SMALL);
+        this(BoardSize.SMALL, GameDifficulty.EASY);
     }
 
-    public Board(BoardSize size) {
-        resize(size);
+    public Board(BoardSize size, GameDifficulty difficulty) {
+        resize(size, difficulty);
     }
 
-    public void resize(BoardSize size) {
+    public Board(Board board) {
+        int size = board.getBoardSize().value;
+        Cell[][] newBoard = new Cell[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Cell oldCell = board.getCell(i, j);
+                Cell newCell = new Cell(oldCell.value);
+                oldCell.setShapeNumber(oldCell.getShapeNumber());
+                newCell.setRowCol(oldCell.row, oldCell.col);
+                newBoard[i][j] = newCell;
+            }
+        }
+        this.board = newBoard;
+        this.boardSize = board.boardSize;
+    }
+
+    public void resize(BoardSize size, GameDifficulty difficulty) {
         boardSize = size;
+        gameDifficulty = difficulty;
         board = BoardGenerator.generateBoard(size);
         helper = new BoardHelper(this);
         occupied = new boolean[size.value][size.value];
         allShapes = new ArrayList<>();
         if (!generateAllShapes()) {
-            resize(size);
+            resize(size, difficulty);
         } else {
             int shapeNumber = 1;
             for (ArrayList<Cell> shape : allShapes) {
@@ -36,6 +55,7 @@ public class Board {
                 }
                 shapeNumber++;
             }
+            ProblemGenerator.generateProblem(this);
         }
     }
 
@@ -124,6 +144,10 @@ public class Board {
 
     public BoardSize getBoardSize() {
         return boardSize;
+    }
+
+    public GameDifficulty getGameDifficulty() {
+        return gameDifficulty;
     }
 
     public Cell getCell(int row, int col) {
