@@ -4,31 +4,22 @@ import game.core.Board;
 
 import java.util.ArrayList;
 
-public class Backtracking {
-    public static boolean solve(Board board) {
-        boolean complete = true;
+public class CSPBacktrackingSolver {
+    public static Boolean solve(Board board) {
         int size = board.getBoardSize().value;
-        int i, j = -1;
-        outerloop:
-        for (i = 0; i < size; i++) {
-            for (j = 0; j < size; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (board.getNumber(i, j) == -1) {
-                    complete = false;
-                    break outerloop;
+                    for (int k = 1; k <= size; k++) {
+                        if (isValid(board, i, j, k)) {
+                            board.getCell(i, j).setValue(k);
+                            return solve(new Board(board));
+                        }
+                    }
                 }
             }
         }
-        if (complete) {
-            return true;
-        } else {
-            for (int k = 1; k <= size; k++) {
-                if (isValid(board, i, j, k)) {
-                    board.getCell(i, j).setValue(k);
-                    return solve(new Board(board));
-                }
-            }
-            return false;
-        }
+        return true;
     }
 
     private static boolean isValid(Board board, int i, int j, int k) {

@@ -4,28 +4,30 @@ import game.core.Board;
 import game.core.BoardSize;
 import game.core.Cell;
 import game.core.GameDifficulty;
-import game.solver.Backtracking;
+import game.solver.CSPBacktrackingSolver;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class ProblemGenerator {
 
     public static void generateProblem(Board board) {
         BoardSize boardSize = board.getBoardSize();
         int remove = getRemoveNumber(boardSize, board.getGameDifficulty());
-        while (remove > 1) {
+        ArrayList<Cell> coordinates = board.getAllShapes().stream().flatMap(Collection::stream).collect(Collectors.toCollection(ArrayList::new));
+        while (remove > 1 && !coordinates.isEmpty()) {
             int x, y;
-            x = getRandomNumber(0, boardSize.value);
-            y = getRandomNumber(0, boardSize.value);
-            if (board.getNumber(x, y) != -1) {
-                board.getCell(x, y).setValue(-1);
-                if (true) {
-                    remove--;
-                    System.out.println("Removed (" + x + "," + y + ") Remaining: " + remove);
-                } else {
-//                    board.getCell(x, y).setValue(temp);
-                }
+            Cell cell = coordinates.remove(getRandomNumber(0, coordinates.size() - 1));
+            x = cell.getRow();
+            y = cell.getCol();
+            int temp = board.getNumber(x, y);
+            board.getCell(x, y).setValue(-1);
+            if (CSPBacktrackingSolver.solve(new Board(board))) {
+                remove--;
+                System.out.println("Removed (" + x + "," + y + ") Remaining: " + remove);
+            } else {
+                board.getCell(x, y).setValue(temp);
             }
         }
     }
