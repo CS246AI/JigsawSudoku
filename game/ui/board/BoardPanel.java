@@ -2,12 +2,13 @@ package game.ui.board;
 
 import game.core.Board;
 import game.core.BoardSize;
+import game.ui.MainFrame;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class BoardPanel extends JPanel {
+public class BoardPanel extends JPanel implements MainFrame.BoardUpdater {
 
     private static final Color[] colors = new Color[]{Color.decode("#9ff5e8"), Color.decode("#eebb88"), Color.decode("#f3d98c"), Color.decode("#9ff59b"), Color.decode("#f2d2d1"), Color.decode("#e886ea"), Color.decode("#869ff2"), Color.WHITE, Color.decode("#f0f890"),};
     JLabel[][] gridCells;
@@ -24,12 +25,13 @@ public class BoardPanel extends JPanel {
         repaint();
     }
 
+    @Override
     public void update(Board board) {
         int size = board.getBoardSize().value;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 int num = board.getNumber(i, j);
-                if (num != -1) {
+                if (num != 0) {
                     gridCells[i][j].setText(String.valueOf(num));
                 }
             }
@@ -51,7 +53,7 @@ public class BoardPanel extends JPanel {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 JLabel cell;
-                if (board.getNumber(i, j) != -1) {
+                if (board.getNumber(i, j) != 0) {
                     cell = new JLabel(String.valueOf(board.getNumber(i, j)));
                 } else {
                     cell = new JLabel();

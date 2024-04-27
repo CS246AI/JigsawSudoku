@@ -4,7 +4,7 @@ import game.core.Board;
 import game.core.BoardSize;
 import game.core.Cell;
 import game.core.GameDifficulty;
-import game.solver.CSPBacktrackingSolver;
+import game.solver.BacktrackingSolver;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,15 +15,15 @@ public class ProblemGenerator {
     public static void generateProblem(Board board) {
         BoardSize boardSize = board.getBoardSize();
         int remove = getRemoveNumber(boardSize, board.getGameDifficulty());
-        ArrayList<Cell> coordinates = board.getAllShapes().stream().flatMap(Collection::stream).collect(Collectors.toCollection(ArrayList::new));
-        while (remove > 1 && !coordinates.isEmpty()) {
+        ArrayList<Cell> cells = board.getAllShapes().stream().flatMap(Collection::stream).collect(Collectors.toCollection(ArrayList::new));
+        while (remove > 1 && !cells.isEmpty()) {
             int x, y;
-            Cell cell = coordinates.remove(getRandomNumber(0, coordinates.size() - 1));
+            Cell cell = cells.remove(getRandomNumber(0, cells.size() - 1));
             x = cell.getRow();
             y = cell.getCol();
             int temp = board.getNumber(x, y);
-            board.getCell(x, y).setValue(-1);
-            if (CSPBacktrackingSolver.solve(new Board(board))) {
+            board.getCell(x, y).setValue(0);
+            if (BacktrackingSolver.checkIfSolvable(new Board(board))) {
                 remove--;
                 System.out.println("Removed (" + x + "," + y + ") Remaining: " + remove);
             } else {

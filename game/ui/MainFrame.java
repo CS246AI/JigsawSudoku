@@ -3,6 +3,7 @@ package game.ui;
 import game.core.Board;
 import game.core.BoardSize;
 import game.core.GameDifficulty;
+import game.solver.BacktrackingSolver;
 import game.ui.board.BoardPanel;
 import game.ui.controls.DifficultyPanel;
 import game.ui.controls.SizePanel;
@@ -11,18 +12,71 @@ import game.ui.controls.ControlPanel;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ControlPanel.ControlUpdater {
+
+    BoardPanel boardPanel;
+    ControlPanel control;
+
     public MainFrame(Board board) {
         setTitle("Sudoku Board");
         setLayout(new BorderLayout());
         setSize(800, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        BoardPanel boardPanel = new BoardPanel(board);
-        ControlPanel control = new ControlPanel(board.getBoardSize(), getSizeChangeInterface(board, boardPanel), board.getGameDifficulty(), getDifficultyChangeInterface(board, boardPanel));
+        boardPanel = new BoardPanel(board);
+        control = new ControlPanel(
+                board.getBoardSize(),
+                board.getGameDifficulty(),
+                getSolverRunners(board, boardPanel, this),
+                getSizeChangeInterface(board, boardPanel),
+                getDifficultyChangeInterface(board, boardPanel)
+        );
         add(control, BorderLayout.WEST);
         add(boardPanel, BorderLayout.CENTER);
         setResizable(false);
         setVisible(true);
+    }
+
+    @Override
+    public void update(long time) {
+        control.update(time);
+    }
+
+    public interface BoardUpdater {
+        void update(Board board);
+    }
+
+    private ControlPanel.SolverRunner getSolverRunners(Board board, BoardUpdater boardUpdater, ControlPanel.ControlUpdater controlUpdater) {
+        return new ControlPanel.SolverRunner() {
+
+            @Override
+            public void runGeneticAlgorithm() {
+
+            }
+
+            @Override
+            public void runSimulatedAnnealing() {
+
+            }
+
+            @Override
+            public void runCSP_Backtracking() {
+                long start = System.nanoTime();
+                BacktrackingSolver.solve(board, boardUpdater);
+                board.printBoard();
+                long end = System.nanoTime();
+                controlUpdater.update(end - start);
+            }
+
+            @Override
+            public void runCSP_MRV() {
+
+            }
+
+            @Override
+            public void runCSP_LCV() {
+
+            }
+        };
     }
 
     private SizePanel.SizeChangeInterface getSizeChangeInterface(Board board, BoardPanel boardPanel) {

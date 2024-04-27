@@ -29,13 +29,13 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 Cell oldCell = board.getCell(i, j);
                 Cell newCell = new Cell(oldCell.value);
-                oldCell.setShapeNumber(oldCell.getShapeNumber());
+                newCell.setShapeNumber(oldCell.getShapeNumber());
                 newCell.setRowCol(oldCell.row, oldCell.col);
                 newBoard[i][j] = newCell;
             }
         }
         this.board = newBoard;
-        this.boardSize = board.boardSize;
+        this.boardSize = board.getBoardSize();
     }
 
     public void resize(BoardSize size, GameDifficulty difficulty) {
@@ -56,6 +56,7 @@ public class Board {
                 shapeNumber++;
             }
             ProblemGenerator.generateProblem(this);
+            printBoard();
         }
     }
 
@@ -120,22 +121,21 @@ public class Board {
     public void printBoard() {
         for (int i = 0; i < boardSize.value; i++) {
             for (int j = 0; j < boardSize.value; j++) {
-                System.out.print(board[i][j] + " (" + board[i][j].getShapeNumber() + ") ");
+                System.out.print(board[i][j] + " ");
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     public void printShapes() {
-        int shapeNumber = 1;
-        for (ArrayList<Cell> shape : allShapes) {
-            System.out.println("Shape " + shapeNumber + ":");
-            for (Cell cell : shape) {
-                System.out.print("[" + cell.getValue() + " " + cell.getRow() + "," + cell.getCol() + "] ");
+        for (int i = 0; i < boardSize.value; i++) {
+            for (int j = 0; j < boardSize.value; j++) {
+                System.out.print(board[i][j].getShapeNumber() + " ");
             }
             System.out.println();
-            shapeNumber++;
         }
+        System.out.println();
     }
 
     public ArrayList<ArrayList<Cell>> getAllShapes() {
