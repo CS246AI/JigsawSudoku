@@ -11,8 +11,9 @@ public class ControlPanel extends JPanel {
     JButton geneticAlgorithm;
     JButton simulatedAnnealing;
     JButton csp;
-    JButton cspMRV;
-    JButton cspLCV;
+    JCheckBox mrv;
+    JCheckBox lcv;
+    JCheckBox forwardChecking;
     SizePanel sizePanel;
     DifficultyPanel difficultyPanel;
     JLabel timeLabel;
@@ -36,13 +37,16 @@ public class ControlPanel extends JPanel {
 
         csp = new JButton("CSP Backtracking");
         csp.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        csp.addActionListener(e -> solverRunners.runCSP_Backtracking());
+        csp.addActionListener(e -> solverRunners.runCSP_Backtracking(mrv.isSelected(), lcv.isSelected(), forwardChecking.isSelected()));
 
-        cspMRV = new JButton("CSP with MRV");
-        cspMRV.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        mrv = new JCheckBox("MRV");
+        mrv.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
-        cspLCV = new JButton("CSP with LCV");
-        cspLCV.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        lcv = new JCheckBox("LCV");
+        lcv.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+        forwardChecking = new JCheckBox("Forward Checking");
+        forwardChecking.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         sizePanel = new SizePanel(boardSize, sizeChangeInterface);
         sizePanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -57,8 +61,9 @@ public class ControlPanel extends JPanel {
         add(geneticAlgorithm);
         add(simulatedAnnealing);
         add(csp);
-        add(cspMRV);
-        add(cspLCV);
+        add(mrv);
+        add(lcv);
+        add(forwardChecking);
         add(Box.createVerticalGlue());
         add(sizePanel);
         add(Box.createVerticalGlue());
@@ -83,10 +88,6 @@ public class ControlPanel extends JPanel {
 
         void runSimulatedAnnealing();
 
-        void runCSP_Backtracking();
-
-        void runCSP_MRV();
-
-        void runCSP_LCV();
+        void runCSP_Backtracking(boolean MRV, boolean LCV, boolean forwardChecking);
     }
 }

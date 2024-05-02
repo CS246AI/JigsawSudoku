@@ -4,6 +4,7 @@ import game.core.Board;
 import game.core.BoardSize;
 import game.core.GameDifficulty;
 import game.solver.BacktrackingSolver;
+import game.solver.CSP;
 import game.ui.board.BoardPanel;
 import game.ui.controls.DifficultyPanel;
 import game.ui.controls.SizePanel;
@@ -59,22 +60,13 @@ public class MainFrame extends JFrame implements ControlPanel.ControlUpdater {
             }
 
             @Override
-            public void runCSP_Backtracking() {
+            public void runCSP_Backtracking(boolean MRV, boolean LCV, boolean forwardChecking) {
+                CSP csp = new CSP(MRV, LCV, forwardChecking);
                 long start = System.nanoTime();
-                BacktrackingSolver.solve(board, boardUpdater);
+                csp.solve(board, boardUpdater);
                 board.printBoard();
                 long end = System.nanoTime();
                 controlUpdater.update(end - start);
-            }
-
-            @Override
-            public void runCSP_MRV() {
-
-            }
-
-            @Override
-            public void runCSP_LCV() {
-
             }
         };
     }

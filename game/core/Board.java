@@ -28,7 +28,7 @@ public class Board {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Cell oldCell = board.getCell(i, j);
-                Cell newCell = new Cell(oldCell.value);
+                Cell newCell = new Cell(oldCell.value, size);
                 newCell.setShapeNumber(oldCell.getShapeNumber());
                 newCell.setRowCol(oldCell.row, oldCell.col);
                 newBoard[i][j] = newCell;

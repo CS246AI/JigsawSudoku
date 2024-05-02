@@ -31,7 +31,7 @@ public class BoardGenerator {
     private static Cell[] generateArray(int n) {
         Cell[] array = new Cell[n];
         for (int i = 0; i < n; i++) {
-            array[i] = new Cell(i + 1);
+            array[i] = new Cell(i + 1, n);
         }
         return array;
     }
@@ -63,9 +63,9 @@ public class BoardGenerator {
 
     private static Cell[] shift(Cell[] previous) {
         Cell[] row = new Cell[previous.length];
-        row[0] = new Cell(previous[previous.length - 1].getValue());
+        row[0] = new Cell(previous[previous.length - 1].getValue(), previous[previous.length - 1].getDomain().size());
         for (int i = 1; i < previous.length; i++) {
-            row[i] = new Cell(previous[i - 1].getValue());
+            row[i] = new Cell(previous[i - 1].getValue(), previous[i - 1].getDomain().size());
         }
         return row;
     }
