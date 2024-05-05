@@ -1,30 +1,10 @@
-package game.solver;
+package game.generator;
 
 import game.core.Board;
-import game.ui.MainFrame;
 
 import java.util.ArrayList;
 
-public class BacktrackingSolver {
-    public static Boolean solve(Board board, MainFrame.BoardUpdater boardUpdater) {
-        int size = board.getBoardSize().value;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (board.getNumber(i, j) == 0) {
-                    for (int k = 1; k <= size; k++) {
-                        if (isValid(board, i, j, k)) {
-                            board.getCell(i, j).setValue(k);
-                            boardUpdater.update(board);
-                            return solve(board, boardUpdater);
-                        }
-                    }
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
+public class BacktrackingSolverChecker {
     public static Boolean checkIfSolvable(Board board) {
         int size = board.getBoardSize().value;
         for (int i = 0; i < size; i++) {

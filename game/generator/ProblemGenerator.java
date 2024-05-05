@@ -4,7 +4,6 @@ import game.core.Board;
 import game.core.BoardSize;
 import game.core.Cell;
 import game.core.GameDifficulty;
-import game.solver.BacktrackingSolver;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +22,7 @@ public class ProblemGenerator {
             y = cell.getCol();
             int temp = board.getNumber(x, y);
             board.getCell(x, y).setValue(0);
-            if (BacktrackingSolver.checkIfSolvable(new Board(board))) {
+            if (BacktrackingSolverChecker.checkIfSolvable(new Board(board))) {
                 remove--;
                 System.out.println("Removed (" + x + "," + y + ") Remaining: " + remove);
             } else {

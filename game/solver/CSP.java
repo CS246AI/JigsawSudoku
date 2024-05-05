@@ -8,9 +8,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CSP {
-    boolean mrv;
-    boolean lcv;
-    boolean forwardChecking;
+    private final boolean mrv;
+    private final boolean lcv;
+    private final boolean forwardChecking;
 
     public CSP(boolean mrv, boolean lcv, boolean forwardChecking) {
         this.mrv = mrv;
@@ -147,8 +147,10 @@ public class CSP {
     }
 
     private Boolean checkRowInference(Board board, Cell cell, Integer num) {
-        for (Cell rowCell : getRowCells(board, cell.getRow())) {
-            if (rowCell.getDomain().size() == 1 && rowCell.getDomain().contains(num)) {
+        ArrayList<Cell> rowCells = getRowCells(board, cell.getRow());
+        rowCells.remove(cell);
+        for (Cell rowCell : rowCells) {
+            if (rowCell.getValue() == 0 && rowCell.getDomain().size() == 1 && rowCell.getDomain().contains(num)) {
                 return false;
             }
         }
@@ -156,8 +158,10 @@ public class CSP {
     }
 
     private boolean checkColumnInference(Board board, Cell cell, Integer num) {
-        for (Cell colCell : getColumnCells(board, cell.getCol())) {
-            if (colCell.getDomain().size() == 1 && colCell.getDomain().contains(num)) {
+        ArrayList<Cell> columnCells = getColumnCells(board, cell.getCol());
+        columnCells.remove(cell);
+        for (Cell colCell : columnCells) {
+            if (colCell.getValue() == 0 && colCell.getDomain().size() == 1 && colCell.getDomain().contains(num)) {
                 return false;
             }
         }
@@ -165,8 +169,10 @@ public class CSP {
     }
 
     private boolean checkShapeInference(Board board, Cell cell, Integer num) {
-        for (Cell shapeCell : getShapeCells(board, cell.getRow(), cell.getCol())) {
-            if (shapeCell.getDomain().size() == 1 && shapeCell.getDomain().contains(num)) {
+        ArrayList<Cell> shapeCells = getShapeCells(board, cell.getRow(), cell.getCol());
+        shapeCells.remove(cell);
+        for (Cell shapeCell : shapeCells) {
+            if (shapeCell.getValue() == 0 && shapeCell.getDomain().size() == 1 && shapeCell.getDomain().contains(num)) {
                 return false;
             }
         }

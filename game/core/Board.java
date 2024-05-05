@@ -35,6 +35,7 @@ public class Board {
             }
         }
         this.board = newBoard;
+        this.allShapes = board.allShapes;
         this.boardSize = board.getBoardSize();
     }
 
