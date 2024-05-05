@@ -105,7 +105,7 @@ public class ControlPanel extends JPanel {
         ));
         numberOfRestartsLabel = new JLabel("Number of Restarts");
         numberOfRestartsLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        numberOfRestarts = new JTextField("1");
+        numberOfRestarts = new JTextField("5");
         numberOfRestarts.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         simulatedAnnealing = new JButton("Simulated Annealing");
