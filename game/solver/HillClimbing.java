@@ -15,6 +15,7 @@ public class HillClimbing extends Heuristic {
         int iterationsWithoutImprovement = 0;
         boolean improvement = true;
         while (improvement || iterationsWithoutImprovement < maxIterationsWithoutImprovement) {
+            boardUpdater.update(board);
             improvement = false;
             ArrayList<Cell> emptyCells = getEmptyCells(board);
             if (emptyCells.isEmpty() || currentHeuristic == 0) {
@@ -51,7 +52,6 @@ public class HillClimbing extends Heuristic {
                         cell.setValue(0);
                         iterationsWithoutImprovement++;
                     }
-                    boardUpdater.update(board);
                 } else {
                     return;
                 }
@@ -63,6 +63,7 @@ public class HillClimbing extends Heuristic {
         int currentHeuristic = computeHeuristic(board);
         boolean improvement = true;
         while (improvement) {
+            boardUpdater.update(board);
             improvement = false;
             ArrayList<Cell> emptyCells = getEmptyCells(board);
             Collections.shuffle(emptyCells);
@@ -94,7 +95,6 @@ public class HillClimbing extends Heuristic {
                     } else {
                         cell.setValue(0);
                     }
-                    boardUpdater.update(board);
                 }
             }
         }
