@@ -32,7 +32,7 @@ This project implements a Jigsaw Sudoku game with a user interface and a solver 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/CS246AI/JigsawSudoku
+   git clone https://github.com/surik-simyan/CS246AI-JigsawSudoku
    ```
 2. Run the Main method: `Main`
 
